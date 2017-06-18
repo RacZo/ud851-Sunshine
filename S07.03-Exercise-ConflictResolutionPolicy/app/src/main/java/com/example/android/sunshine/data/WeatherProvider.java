@@ -2,6 +2,7 @@ package com.example.android.sunshine.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -14,9 +15,13 @@ import android.support.annotation.Nullable;
 
 public class WeatherProvider extends ContentProvider {
 
+    private WeatherDbHelper mWeatherDbHelper;
+
     @Override
     public boolean onCreate() {
-        return false;
+        Context context = getContext();
+        mWeatherDbHelper = new WeatherDbHelper(context);
+        return true;
     }
 
     @Nullable

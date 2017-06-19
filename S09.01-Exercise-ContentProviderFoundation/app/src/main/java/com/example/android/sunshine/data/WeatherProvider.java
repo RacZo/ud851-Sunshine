@@ -19,6 +19,7 @@ import android.annotation.TargetApi;
 import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -35,15 +36,24 @@ import android.support.annotation.NonNull;
  */
 public class WeatherProvider extends ContentProvider {
 
-//  TODO (5) Create static constant integer values named CODE_WEATHER & CODE_WEATHER_WITH_DATE to identify the URIs this ContentProvider can handle
-
-//  TODO (7) Instantiate a static UriMatcher using the buildUriMatcher method
-
     WeatherDbHelper mOpenHelper;
 
-//  TODO (6) Write a method called buildUriMatcher where you match URI's to their numeric ID
+    //  TODO (5) Create static constant integer values named CODE_WEATHER & CODE_WEATHER_WITH_DATE to identify the URIs this ContentProvider can handle
+    public static final int CODE_WEATHER = 200;
+    public static final int CODE_WEATHER_WITH_DATE = 201;
 
-//  TODO (1) Implement onCreate
+    //  TODO (6) Write a method called buildUriMatcher where you match URI's to their numeric ID
+    public static UriMatcher buildUriMatcher() {
+        UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER, CODE_WEATHER);
+        uriMatcher.addURI(WeatherContract.CONTENT_AUTHORITY, WeatherContract.PATH_WEATHER + "/#", CODE_WEATHER_WITH_DATE);
+        return uriMatcher;
+    }
+
+    //  TODO (7) Instantiate a static UriMatcher using the buildUriMatcher method
+    private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    //  TODO (1) Implement onCreate
     @Override
     public boolean onCreate() {
 //      TODO (2) Within onCreate, instantiate our mOpenHelper
@@ -63,7 +73,6 @@ public class WeatherProvider extends ContentProvider {
      * @param uri    The content:// URI of the insertion request.
      * @param values An array of sets of column_name/value pairs to add to the database.
      *               This must not be {@code null}.
-     *
      * @return The number of values that were inserted.
      */
     @Override
@@ -72,6 +81,7 @@ public class WeatherProvider extends ContentProvider {
     }
 
 //  TODO (8) Provide an implementation for the query method
+
     /**
      * Handles query requests from clients. We will use this method in Sunshine to query for all
      * of our weather data as well as to query for the weather on a particular day.
